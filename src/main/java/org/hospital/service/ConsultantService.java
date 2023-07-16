@@ -53,25 +53,29 @@ public class ConsultantService  implements Serializable {
          repository.deleteById(id);
     }
 
-    public Consultant updateConsultant(Long id, Consultant consultant){
+
+    public Consultant updateConsultant(Long id, ConsultantRequest request){
+
         Consultant consultantModel = repository.findById(id);
 
         if(consultantModel == null){
             throw new WebSocketClientHandshakeException("Consulta com id " + id + "não encontrada :(");
         }
 
-        consultantModel.setDateConsult(consultant.getDateConsult());
-        consultantModel.setRoom(consultant.getRoom());
-        consultantModel.setDoctor(consultant.getDoctor());
-        consultantModel.setPatient(consultant.getPatient());
-        consultantModel.setIsPatientToken(consultant.getIsPatientToken());
-        consultantModel.setIsPatientRoomClinic(consultant.getIsPatientRoomClinic());
-        consultantModel.setIsPatientRoomMedication(consultant.getIsPatientRoomMedication());
-        consultantModel.setIsPatientRoomSorting(consultant.getIsPatientRoomSorting());
+        //consultantModel.setDateConsult(request.getDateConsult());
+        consultantModel.setRoom(request.getRoom());
+        consultantModel.setDoctor(request.getDoctor());
+        consultantModel.setPatient(request.getPatient());
+        consultantModel.setIsPatientToken(request.getIsPatientToken());
+        consultantModel.setIsPatientRoomClinic(request.getIsPatientRoomClinic());
+        consultantModel.setIsPatientRoomMedication(request.getIsPatientRoomMedication());
+        consultantModel.setIsPatientRoomSorting(request.getIsPatientRoomSorting());
+        repository.update(consultantModel);
         return consultantModel;
     }
 
     public ConsultantStatusResponse updateStatus(Long id, ConsultantStatusRequest request){
+
         Consultant consultantModel = mapper.toEntityStatus(request);
         ConsultantStatusResponse response = mapper.toResponseConsult(request);
         consultantModel = repository.findById(id);

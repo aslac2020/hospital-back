@@ -6,6 +6,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.hospital.domain.entity.Doctor;
 import org.hospital.domain.entity.Patient;
 import org.hospital.dto.DoctorRequest;
+import org.hospital.dto.DoctorResponse;
 import org.hospital.dto.PatientRequest;
 import org.hospital.service.DoctorService;
 import org.hospital.service.PatientService;
@@ -15,6 +16,7 @@ import org.hospital.usecase.PatientIncludeUseCase;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/api/medicos")
 @RequiredArgsConstructor
@@ -63,4 +65,31 @@ public class DoctorController {
         Doctor doctortModel = service.updateDoctor(id, doctor);
         return Response.ok(doctortModel).status(200).build();
     }
+
+    @GET
+    @Path("{specialties}")
+    public Response getDoctorBySpecialties(@PathParam("specialties") String specialties){
+        List<Doctor> doctorSpecialties =  service.getDoctorBySpecialities(specialties);
+        if(doctorSpecialties.size() < 1){
+            return Response.status(400).entity("Especialiada não encontrada :(").build();
+        }
+        return Response.status(200).entity(doctorSpecialties).build();
+    }
+
+//    @GET
+//    @Path("crm/{crm}")
+//    public Response getDoctorByCrm(@PathParam("crm") String crm){
+//        List<DoctorResponse> doctorCrm =  service.getDoctorByCrm(crm);
+//        return Response.status(200).entity(doctorCrm).build();
+//    }
+
+
+    @GET
+    @Path("name/{name}")
+    public Response getDoctorByName(@PathParam("name") String name){
+        List<DoctorResponse> doctorCrm =  service.getDoctorByName(name);
+        return Response.status(200).entity(doctorCrm).build();
+    }
+
+
 }

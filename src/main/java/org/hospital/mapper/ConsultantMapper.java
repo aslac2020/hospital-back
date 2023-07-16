@@ -17,5 +17,7 @@ public interface ConsultantMapper {
 
     ConsultantResponse toResponse(Consultant consult);
 
+    ConsultantRequest toRequest(Consultant consultant);
+
     ConsultantStatusResponse toResponseConsult(ConsultantStatusRequest request);
 }

@@ -18,6 +18,13 @@ public class ConsultantRepository implements PanacheRepositoryBase<Consultant, L
 
     public void save(Consultant entity){
     log.info("PatientRepository - save....");
-    persist(entity);
+    entityManager.persist(entity);
     }
+
+    public void update(Consultant entity){
+        log.info("PatientRepository - update....");
+        entityManager.merge(entity);
+    }
+
+
 }

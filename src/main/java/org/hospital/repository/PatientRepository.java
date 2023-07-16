@@ -15,7 +15,8 @@ public class PatientRepository implements PanacheRepositoryBase<Patient, Long> {
     @Inject
     private EntityManager entityManager;
 
-    public void save(Patient entity){
+    public void
+    save(Patient entity){
     log.info("PatientRepository - save....");
     persist(entity);
     }

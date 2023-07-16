@@ -27,37 +27,37 @@ public class DoctorService {
     private final DoctorRepository repository;
     private final DoctorMapper mapper;
 
-    public Doctor create(DoctorRequest request){
+    public Doctor create(DoctorRequest request) {
         Doctor doctor = mapper.toEntity(request);
         DoctorResponse response = mapper.toResponse(doctor);
         repository.persist((Iterable<Doctor>) response);
         return doctor;
     }
 
-    public List<Doctor> getAllDoctors(){
+    public List<Doctor> getAllDoctors() {
         return repository.listAll();
     }
 
-    public Doctor getDoctorById(Long id){
+    public Doctor getDoctorById(Long id) {
         Optional<Doctor> optionalDoctor = Optional.ofNullable(repository.findById(id));
-        if(optionalDoctor.isEmpty()){
+        if (optionalDoctor.isEmpty()) {
             throw new NotFoundException();
         }
         return repository.findById(id);
     }
 
-    public void deleteDoctor(Long id){
+    public void deleteDoctor(Long id) {
         Optional<Doctor> optionalDoctor = Optional.ofNullable(repository.findById(id));
-        if(optionalDoctor.isEmpty()){
+        if (optionalDoctor.isEmpty()) {
             throw new NotFoundException();
         }
-         repository.deleteById(id);
+        repository.deleteById(id);
     }
 
-    public Doctor updateDoctor(Long id, Doctor doctor){
+    public Doctor updateDoctor(Long id, Doctor doctor) {
         Doctor doctorModel = repository.findById(id);
 
-        if(doctorModel == null){
+        if (doctorModel == null) {
             throw new WebSocketClientHandshakeException("Medico com id " + id + "não encontrado :(");
         }
 
@@ -68,8 +68,21 @@ public class DoctorService {
         return doctorModel;
     }
 
+    public List<Doctor> getDoctorBySpecialities(String specialities) {
+        List<Doctor> optionalDoctor = repository.findyBySpecialities(specialities);
+        return optionalDoctor;
+    }
 
+//    public List<DoctorResponse> getDoctorByCrm(String crm) {
+//        List<Doctor> optionalDoctor = repository.findyByCrm(crm);
+//        List<DoctorResponse> response = mapper.toListResponse(optionalDoctor);
+//        return response;
+//    }
 
-
+    public List<DoctorResponse> getDoctorByName(String name) {
+        List<Doctor> optionalDoctor = repository.findyByName(name);
+        List<DoctorResponse> response = mapper.toListResponse(optionalDoctor);
+        return response;
+    }
 
 }

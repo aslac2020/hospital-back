@@ -8,10 +8,14 @@ import org.hospital.dto.PatientRequest;
 import org.hospital.dto.PatientResponse;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "cdi")
 public interface DoctorMapper {
 
     Doctor toEntity(DoctorRequest request);
 
     DoctorResponse toResponse(Doctor doctor);
+
+    List<DoctorResponse> toListResponse(List<Doctor> doctor);
 }

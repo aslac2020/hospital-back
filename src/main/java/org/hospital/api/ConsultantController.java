@@ -16,6 +16,7 @@ import org.hospital.service.TradutorService;
 import org.hospital.usecase.ConsultantIncludeUseCase;
 import org.hospital.usecase.RoomIncludeUseCase;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -35,6 +36,7 @@ public class ConsultantController {
     private final ConsultantMapper consultantMapper;
 
     @POST
+    @Transactional
     @Operation(summary = "Create Consultant")
     public Response createConsultant(ConsultantRequest request) {
         if (request == null) {
@@ -68,13 +70,22 @@ public class ConsultantController {
     @PUT
     @Path("/status/{id}")
     public Response updateStatus(@PathParam("id") Long id, ConsultantStatusRequest request){
-        service.updateStatus(id, request);
+       var result = service.updateStatus(id, request);
         return Response.ok(request).status(200).build();
     }
+//    @PUT
+//    @Path("{id}")
+//    public Response updateConsultant(@PathParam("id") Long id, Consultant consultant){
+//        Consultant consultantModel = service.updateConsultant(id, consultant);
+//        return Response.ok(consultantModel).status(200).build();
+//    }
+
     @PUT
     @Path("{id}")
-    public Response updateConsultant(@PathParam("id") Long id, Consultant consultant){
-        Consultant consultantModel = service.updateConsultant(id, consultant);
-        return Response.ok(consultantModel).status(200).build();
+    @Transactional
+    public Response updateConsultant(@PathParam("id") Long id, ConsultantRequest request){
+         var result = service.updateConsultant(id, request);
+         //var mapper = consultantMapper.toRequest(result);
+        return Response.ok(result).status(200).build();
     }
 }
