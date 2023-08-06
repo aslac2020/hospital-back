@@ -3,24 +3,20 @@ package org.hospital.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.hospital.domain.entity.Consultant;
-import org.hospital.domain.entity.Room;
 import org.hospital.dto.ConsultantRequest;
 import org.hospital.dto.ConsultantStatusRequest;
-import org.hospital.dto.RoomRequest;
 import org.hospital.mapper.ConsultantMapper;
 import org.hospital.service.ConsultantService;
-import org.hospital.service.RoomService;
 import org.hospital.service.TradutorService;
 import org.hospital.usecase.ConsultantIncludeUseCase;
-import org.hospital.usecase.RoomIncludeUseCase;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.concurrent.ExecutionException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Path("/api/consultas")
 @RequiredArgsConstructor
@@ -59,6 +55,20 @@ public class ConsultantController {
         return Response.status(200).entity(consultantId).build();
     }
 
+    @GET
+    @Path("/datas")
+    public Response getOrderdates(){
+        LocalDateTime consultantId = service.orderDates();
+        return Response.status(200).entity(consultantId).build();
+    }
+
+    @GET
+    @Path("/paciente")
+    public Response getConsultByOrdem(){
+        Consultant consulta = service.orderConsultByTime();
+        return Response.status(200).entity(consulta).build();
+    }
+
     @DELETE
     @Path("{id}")
     public Response deleteConsultant(@PathParam("id")Long id){
@@ -73,19 +83,12 @@ public class ConsultantController {
        var result = service.updateStatus(id, request);
         return Response.ok(request).status(200).build();
     }
-//    @PUT
-//    @Path("{id}")
-//    public Response updateConsultant(@PathParam("id") Long id, Consultant consultant){
-//        Consultant consultantModel = service.updateConsultant(id, consultant);
-//        return Response.ok(consultantModel).status(200).build();
-//    }
 
     @PUT
     @Path("{id}")
     @Transactional
     public Response updateConsultant(@PathParam("id") Long id, ConsultantRequest request){
          var result = service.updateConsultant(id, request);
-         //var mapper = consultantMapper.toRequest(result);
         return Response.ok(result).status(200).build();
     }
 }

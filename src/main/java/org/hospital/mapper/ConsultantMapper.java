@@ -8,6 +8,8 @@ import org.hospital.dto.ConsultantStatusRequest;
 import org.hospital.dto.ConsultantStatusResponse;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "cdi")
 public interface ConsultantMapper {
 

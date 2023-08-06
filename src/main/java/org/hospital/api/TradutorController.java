@@ -3,17 +3,15 @@ package org.hospital.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
-import org.hospital.domain.entity.Room;
-import org.hospital.dto.RoomRequest;
-import org.hospital.service.RoomService;
+import org.hospital.domain.entity.Consultant;
 import org.hospital.service.TradutorService;
-import org.hospital.usecase.RoomIncludeUseCase;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.http.HttpClient;
 import java.util.concurrent.ExecutionException;
 
 @Path("/api/translate")
@@ -25,10 +23,11 @@ public class TradutorController {
 
     private final TradutorService tradutorService;
 
-    @GET
+
+    @POST
     @Operation(summary = "Traduzir texto")
-    public Response tradutText() throws ExecutionException, InterruptedException {
-        var result = tradutorService.getTextTranslate();
+    public Response callPatient(Consultant consults) throws ExecutionException, InterruptedException {
+        var result = tradutorService.getCallPatient(consults);
         return Response.ok(result).build();
 
     }

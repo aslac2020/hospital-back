@@ -1,6 +1,7 @@
 package org.hospital.service;
 
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakeException;
+import io.smallrye.mutiny.Uni;
 import lombok.RequiredArgsConstructor;
 import org.hospital.domain.entity.Patient;
 import org.hospital.dto.PatientRequest;
@@ -32,6 +33,7 @@ public class PatientService {
     public List<Patient> getAllPatients(){
         return repository.listAll();
     }
+
 
     public Patient getPatientById(Long id){
         Optional<Patient> optionalPatient = Optional.ofNullable(repository.findById(id));

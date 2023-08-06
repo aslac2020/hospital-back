@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hospital.domain.entity.Doctor;
 import org.hospital.domain.entity.Patient;
 import org.hospital.domain.entity.Room;
+import org.hospital.domain.entity.RoomAvaliate;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +20,11 @@ public class ConsultantRequest {
     private Room room;
     private Patient patient;
     private Doctor doctor;
+    private RoomAvaliate roomAvaliate;
     private Boolean isPatientToken;
     private Boolean isPatientRoomSorting;
     private Boolean isPatientRoomClinic;
     private Boolean  isPatientRoomMedication;
     private Boolean isConsultEncerred;
+    private Boolean isPatientWaitingClinic;
 }

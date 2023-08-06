@@ -38,6 +38,13 @@ public class Consultant implements Serializable {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "roomavaliate_id")
+    private RoomAvaliate roomAvaliate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "patientHistory_id")
+    private PatientHistory patientHistory;
 
     @JsonbDateFormat(value = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateConsult;
@@ -45,6 +52,8 @@ public class Consultant implements Serializable {
     private Boolean isPatientToken;
 
     private Boolean isPatientRoomSorting;
+
+    private Boolean isPatientWaitingClinic;
 
     private Boolean isPatientRoomClinic;
 

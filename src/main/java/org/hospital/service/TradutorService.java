@@ -1,6 +1,8 @@
 package org.hospital.service;
 
 import com.microsoft.cognitiveservices.speech.*;
+import org.hospital.domain.entity.Consultant;
+import org.hospital.mapper.PatientMapper;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -15,9 +17,18 @@ public class TradutorService {
     @Inject
     ConsultantService service;
 
-    public AtomicReference<String> getTextTranslate() throws ExecutionException, InterruptedException {
+    @Inject
+    PatientMapper mapper;
 
-        var serviceTranslate = getConsultOpen(service);
+
+    public AtomicReference<String> getCallPatient(Consultant consult) throws ExecutionException, InterruptedException {
+        return this.getTextTranslate(consult);
+    }
+
+
+    public AtomicReference<String> getTextTranslate(Consultant consult) throws ExecutionException, InterruptedException {
+
+        var serviceTranslate = getConsultOpen(consult);
 
         var speechKey = "9d08e802a0c444639b5ce0090a02870e";
         var speechRegion = "eastus";
@@ -31,8 +42,7 @@ public class TradutorService {
 
         if (speechSynthesisResult.getReason() == ResultReason.SynthesizingAudioCompleted) {
             System.out.println("Speech synthesized to speaker for text [" + serviceTranslate + "]");
-        }
-        else if (speechSynthesisResult.getReason() == ResultReason.Canceled) {
+        } else if (speechSynthesisResult.getReason() == ResultReason.Canceled) {
             SpeechSynthesisCancellationDetails cancellation = SpeechSynthesisCancellationDetails.fromResult(speechSynthesisResult);
             System.out.println("CANCELED: Reason=" + cancellation.getReason());
 
@@ -46,24 +56,19 @@ public class TradutorService {
         return serviceTranslate;
 
     }
-    public AtomicReference<String> getConsultOpen(ConsultantService service){
-        var listConsults = service.getAllConsultants();
+
+    public AtomicReference<String> getConsultOpen(Consultant consult) {
+        var consultResult = service.getConsultantById(consult.getId());
         AtomicReference<String> tradutorText = new AtomicReference<>("");
-        listConsults.forEach(data -> {
-            if(data.getIsPatientToken() == true && data.getPatient().getIsPreferential() == true){
-                var textDigited = "Paciente: " + data.getPatient().getName() + data.getPatient().getLastName() + "comparecer a sala de Triagem na sala:" + data.getRoom().getNumberRoom();
-               tradutorText.set(textDigited);
-            }
-            if(data.getIsPatientToken() == true){
-                var textDigited = "Paciente: " + data.getPatient().getName() + data.getPatient().getLastName() + " comparecer a sala de Triagem na sala:" + data.getRoom().getNumberRoom();
-                tradutorText.set(textDigited);
-            }
-        });
+
+        if (consultResult.getIsPatientToken() == true) {
+            var textDigited = "Paciente: " + consultResult.getPatient().getName() + consultResult.getPatient().getLastName() + "comparecer a sala de Triagem ";
+            tradutorText.set(textDigited);
+        }
 
         return tradutorText;
 
     }
-
 
 
 }
