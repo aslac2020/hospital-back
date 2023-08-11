@@ -58,12 +58,17 @@ public class TradutorService {
     }
 
     public AtomicReference<String> getConsultOpen(Consultant consult) {
-        var consultResult = service.getConsultantById(consult.getId());
+        //var consultResult = service.getConsultantById(consult.getId());
         AtomicReference<String> tradutorText = new AtomicReference<>("");
 
-        if (consultResult.getIsPatientToken() == true) {
-            var textDigited = "Paciente: " + consultResult.getPatient().getName() + consultResult.getPatient().getLastName() + "comparecer a sala de Triagem ";
-            tradutorText.set(textDigited);
+
+        if (consult.getIsPatientToken() == true) {
+            var audioTranslate = "Paciente: " + consult.getPatient().getName() + consult.getPatient().getLastName() + "comparecer a sala de Triagem ";
+            tradutorText.set(audioTranslate);
+        }
+        if(consult.getIsPatientRoomClinic() == true){
+            var audioTranslate = "Paciente: " + consult.getPatient().getName() + consult.getPatient().getLastName() + "comparecer ao consultório " + consult.getRoom().getNumberRoom();
+            tradutorText.set(audioTranslate);
         }
 
         return tradutorText;

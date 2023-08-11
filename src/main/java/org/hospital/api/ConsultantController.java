@@ -64,8 +64,8 @@ public class ConsultantController {
 
     @GET
     @Path("/paciente")
-    public Response getConsultByOrdem(){
-        Consultant consulta = service.orderConsultByTime();
+    public Response getConsultByOrdemAvaliate(){
+        Consultant consulta = service.orderConsultByTimeRoomAvaliate();
         return Response.status(200).entity(consulta).build();
     }
 
@@ -91,4 +91,13 @@ public class ConsultantController {
          var result = service.updateConsultant(id, request);
         return Response.ok(result).status(200).build();
     }
+
+    @GET
+    @Path("/consultorio/paciente")
+    public Response getConsultByOrdemDoctor(){
+        Consultant consulta = service.orderConsultByDoctorPatient();
+        return Response.status(200).entity(consulta).build();
+    }
+
+
 }
